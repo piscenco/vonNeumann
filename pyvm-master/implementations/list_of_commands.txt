@@ -1,0 +1,8 @@
+function [arg name] [number of arguments] # new function
+end_function 0 0 # label for end of the function
+if_less_than_two [expression_to_check] [jump to if true] [jump to if false]
+
+new_variable [name]
+readln [r] # read from console into register/variable r
+call [r] [f] [a] # result to register/variable r of function f with args a
+print [r] # print from register r
