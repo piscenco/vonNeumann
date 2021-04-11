@@ -6,13 +6,23 @@ class Assembler:
         cmds = Commands()
         self.list_of_commands = cmds.getCmds()
         self.binary_code = bytearray(1024)
+        self.variables = {}
+        self.end = 2 # 2 bytes for IP, SP reserved
 
     def assemble(self, asm_file_name):
-        number_of_lines = 0;
+        number_of_lines = 0
         asm_file_text = open(asm_file_name, encoding="utf-8")
 
         # find labels' line number
         for i, line in enumerate(asm_file_text):
+            if 'vars:' in line:
+                variables_names = line[5:].split(' ')
+                for j in range(len(variables_names)):
+                    {variables_names[j]: self.end}.update(self.variables)
+                    encoded_var = variables_names[j].encode("cp1251")
+                    self._binaryCode[self.end * 4: self.end * 4 + len(encoded_var)] = encoded_var
+                    self.end = self.end * 4 + len(encoded_var)
+                continue
             new_cmd, arg1, arg2, arg3 = line.replace('\n', '').split(' ')
 
         asm_file_text.close()
